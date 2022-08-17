@@ -7,7 +7,7 @@ Set-DisRes 1600
 }
 
 Write-Host -ForegroundColor Green "Start OSDCloud"
-Start-OSDCloud -OSLanguage nb-no -OSBuild 21H2 -OSEdition Enterprise -ZTI
+Start-OSDCloud -OSLanguage nb-no -ImageFileUrl 'https://vfksaendpointosdcloud001.blob.core.windows.net/public/Win10_LTSC2021.wim' -OSEdition Enterprise -ZTI
 
 Write-Host -ForegroundColor Green "Restarting in 20 seconds!"
 Start-Sleep -Seconds 20
