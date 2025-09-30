@@ -49,7 +49,7 @@ function Write-SectionSuccess {
     Write-Host -ForegroundColor Green $Message
 }
 #endregion
-
+start-sleep -Seconds 5
 $ScriptName = 'Managed Endpoints'
 $ScriptVersion = '30.09.25'
 Write-Host -ForegroundColor Green "$ScriptName $ScriptVersion"
