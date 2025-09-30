@@ -153,7 +153,7 @@ Write-Output $Global:MyOSDCloud
 Write-SectionHeader -Message "Starting OSDCloud"
 write-host "Start-OSDCloud -OSName $OSName -OSEdition $OSEdition -OSActivation $OSActivation -OSLanguage $OSLanguage"
 
-start-waiting -Seconds 25 -Message "Starting OSDCloud in"
+start-sleep -Seconds 25 -Message "Starting OSDCloud in"
 
 Start-OSDCloud -OSName $OSName -OSEdition $OSEdition -OSActivation $OSActivation -OSLanguage $OSLanguage
 
