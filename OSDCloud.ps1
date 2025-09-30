@@ -103,16 +103,6 @@ $Global:MyOSDCloud = [ordered]@{
     SyncMSUpCatDriverUSB = [bool]$true
     CheckSHA1 = [bool]$true
 }
-Write-Host -ForegroundColor Green "Restart= $Restart"
-Write-Host -ForegroundColor Green "Recovery= $RecoveryPartition"
-Write-Host -ForegroundColor Green "OEMActivation= $OEMActivation"
-Write-Host -ForegroundColor Green "WindowsUpdate= $WindowsUpdate"
-Write-Host -ForegroundColor Green "WindowsUpdateDrivers= $WindowsUpdateDrivers"
-Write-Host -ForegroundColor Green "SetTimeZone= $SetTimeZone"
-Write-Host -ForegroundColor Green "ClearDiskConfirm= $ClearDiskConfirm"
-Write-Host -ForegroundColor Green "ShutdownSetupComplete= $ShutdownSetupComplete"
-Write-Host -ForegroundColor Green "SyncMSUpCatDriversUSB= $SyncMSUpCatDriversUSB"
-Write-Host -ForegroundColor Green "CheckSHA1= $CheckSHA1"
 #Testing MS Update Catalog Driver Sync
 #$Global:MyOSDCloud.DriverPackName = 'Microsoft Update Catalog'
 
@@ -211,5 +201,6 @@ if ($Manufacturer -match "Lenovo") {
     Write-Host "Copy-PSModuleToFolder -Name Lenovo.Client.Scripting to $PowerShellSavePath\Modules"
     Copy-PSModuleToFolder -Name Lenovo.Client.Scripting -Destination "$PowerShellSavePath\Modules"
 }
+start-sleep -Seconds 120
 #Restart
 #restart-computer
