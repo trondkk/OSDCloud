@@ -50,12 +50,13 @@ function Write-SectionSuccess {
 }
 #endregion
 start-sleep -Seconds 5
+Write-Host -ForegroundColor Green "Name & Version: "
 $ScriptName = 'Managed Endpoints'
 $ScriptVersion = '30.09.25'
 Write-Host -ForegroundColor Green "$ScriptName $ScriptVersion"
 #Add custom functions used in Script Hosting in GitHub
 #Add custom fucntions from OSDCloud
-start-sleep -Seconds 5
+
 <# Offline Driver Details
 If you extract Driver Packs to your Flash Drive, you can DISM them in while in WinPE and it will make the process much faster, plus ensure driver support for first Boot
 Extract to: OSDCLoudUSB:\OSDCloud\DriverPacks\DISM\$ComputerManufacturer\$ComputerProduct
@@ -64,6 +65,7 @@ $ComputerProduct = (Get-MyComputerProduct)
 $ComputerManufacturer = (Get-MyComputerManufacturer -Brief)
 #>
 start-sleep -Seconds 5
+Write-Host -ForegroundColor Green "Set Variables"
 #Variables to define the Windows OS / Edition etc to be applied during OSDCloud
 $Product = (Get-MyComputerProduct)
 $Model = (Get-MyComputerModel)
@@ -74,7 +76,19 @@ $OSName = 'Windows 11 24H2 ARM64'
 $OSEdition = 'Pro'
 $OSActivation = 'Volume'
 $OSLanguage = 'nb-no'
+
+Write-Host -ForegroundColor Green "Product= $Product"
+Write-Host -ForegroundColor Green "Model= $Model"
+Write-Host -ForegroundColor Green "Manufacturer= $Manufacturer"
+Write-Host -ForegroundColor Green "OSVersion= $OSVersion"
+Write-Host -ForegroundColor Green "OSRelease= $OSReleaseID"
+Write-Host -ForegroundColor Green "OSName= $OSName"
+Write-Host -ForegroundColor Green "OSEdition= $OSEdition"
+Write-Host -ForegroundColor Green "OSActivation= $OSActivation"
+Write-Host -ForegroundColor Green "OSLanguage= $OSLanguage"
+
 start-sleep -Seconds 5
+Write-Host -ForegroundColor Green "Set OSDCloud Variables"
 #Set OSDCloud Vars
 $Global:MyOSDCloud = [ordered]@{
     Restart = [bool]$False
@@ -89,10 +103,21 @@ $Global:MyOSDCloud = [ordered]@{
     SyncMSUpCatDriverUSB = [bool]$true
     CheckSHA1 = [bool]$true
 }
-start-sleep -Seconds 5
+Write-Host -ForegroundColor Green "Restart= $Restart"
+Write-Host -ForegroundColor Green "Recovery= $RecoveryPartition"
+Write-Host -ForegroundColor Green "OEMActivation= $OEMActivation"
+Write-Host -ForegroundColor Green "WindowsUpdate= $WindowsUpdate"
+Write-Host -ForegroundColor Green "WindowsUpdateDrivers= $WindowsUpdateDrivers"
+Write-Host -ForegroundColor Green "SetTimeZone= $SetTimeZone"
+Write-Host -ForegroundColor Green "ClearDiskConfirm= $ClearDiskConfirm"
+Write-Host -ForegroundColor Green "ShutdownSetupComplete= $ShutdownSetupComplete"
+Write-Host -ForegroundColor Green "SyncMSUpCatDriversUSB= $SyncMSUpCatDriversUSB"
+Write-Host -ForegroundColor Green "CheckSHA1= $CheckSHA1"
 #Testing MS Update Catalog Driver Sync
 #$Global:MyOSDCloud.DriverPackName = 'Microsoft Update Catalog'
 
+start-sleep -Seconds 5
+Write-Host -ForegroundColor Green "DriverPack"
 #Used to Determine Driver Pack
 $DriverPack = Get-OSDCloudDriverPack -Product $Product -OSVersion $OSVersion -OSReleaseID $OSReleaseID
 
@@ -115,7 +140,9 @@ if (Test-DISMFromOSDCloudUSB -eq $true){
 }
 #>
 #Enable HPIA | Update HP BIOS | Update HP TPM
+
 start-sleep -Seconds 5
+Write-Host -ForegroundColor Green "HPIA Test"
 if (Test-HPIASupport){
     Write-SectionHeader -Message "Detected HP Device, Enabling HPIA, HP BIOS and HP TPM Updates"
     #$Global:MyOSDCloud.DevMode = [bool]$True
@@ -128,7 +155,9 @@ if (Test-HPIASupport){
     iex (irm https://raw.githubusercontent.com/gwblok/garytown/master/OSD/CloudOSD/Manage-HPBiosSettings.ps1)
     Manage-HPBiosSettings -SetSettings
 }
+
 start-sleep -Seconds 5
+Write-Host -ForegroundColor Green "Lenovo"
 if ($Manufacturer -match "Lenovo") {
     #Set Lenovo BIOS Settings to what I want:
     iex (irm https://raw.githubusercontent.com/gwblok/garytown/master/OSD/CloudOSD/Manage-LenovoBiosSettings.ps1)
@@ -141,6 +170,7 @@ if ($Manufacturer -match "Lenovo") {
     
 }
 start-sleep -Seconds 5
+Write-Host -ForegroundColor Green "OSDCloud Variables"
 #write variables to console
 Write-SectionHeader "OSDCloud Variables"
 Write-Output $Global:MyOSDCloud
@@ -149,6 +179,9 @@ Write-Output $Global:MyOSDCloud
 #$ModulePath = (Get-ChildItem -Path "$($Env:ProgramFiles)\WindowsPowerShell\Modules\osd" | Where-Object {$_.Attributes -match "Directory"} | Select-Object-Object -Last 1).fullname
 #import-module "$ModulePath\OSD.psd1" -Force
 
+
+start-sleep -Seconds 5
+Write-Host -ForegroundColor Green "Start OSDCloud"
 #Launch OSDCloud
 Write-SectionHeader -Message "Starting OSDCloud"
 write-host "Start-OSDCloud -OSName $OSName -OSEdition $OSEdition -OSActivation $OSActivation -OSLanguage $OSLanguage"
@@ -156,7 +189,9 @@ write-host "Start-OSDCloud -OSName $OSName -OSEdition $OSEdition -OSActivation $
 Start-OSDCloud -OSName $OSName -OSEdition $OSEdition -OSActivation $OSActivation -OSLanguage $OSLanguage
 
 Write-SectionHeader -Message "OSDCloud Process Complete, Running Custom Actions From Script Before Reboot"
+
 start-sleep -Seconds 5
+Write-Host -ForegroundColor Green "Copy CMTrace"
 <#Used in Testing "Beta Gary Modules which I've updated on the USB Stick"
 $OfflineModulePath = (Get-ChildItem -Path "C:\Program Files\WindowsPowerShell\Modules\osd" | Where-Object {$_.Attributes -match "Directory"} | Select-Object -Last 1).fullname
 write-host -ForegroundColor Yellow "Updating $OfflineModulePath using $ModulePath - For Dev Purposes Only"
@@ -167,6 +202,8 @@ if (Test-path -path "x:\windows\system32\cmtrace.exe"){
     copy-item "x:\windows\system32\cmtrace.exe" -Destination "C:\Windows\System\cmtrace.exe" -verbose
 }
 
+start-sleep -Seconds 5
+Write-Host -ForegroundColor Green "Lenovo Powershell"
 if ($Manufacturer -match "Lenovo") {
     $PowerShellSavePath = 'C:\Program Files\WindowsPowerShell'
     Write-Host "Copy-PSModuleToFolder -Name LSUClient to $PowerShellSavePath\Modules"
