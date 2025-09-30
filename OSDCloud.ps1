@@ -68,8 +68,8 @@ $Product = (Get-MyComputerProduct)
 $Model = (Get-MyComputerModel)
 $Manufacturer = (Get-CimInstance -ClassName Win32_ComputerSystem).Manufacturer
 $OSVersion = 'Windows 11' #Used to Determine Driver Pack
-$OSReleaseID = '23H2' #Used to Determine Driver Pack
-$OSName = 'Windows 11 23H2 ARM64'
+$OSReleaseID = '24H2' #Used to Determine Driver Pack
+$OSName = 'Windows 11 24H2 ARM64'
 $OSEdition = 'Pro'
 $OSActivation = 'Volume'
 $OSLanguage = 'nb-no'
@@ -84,6 +84,7 @@ Write-Host -ForegroundColor Green "OSEdition= $OSEdition"
 Write-Host -ForegroundColor Green "OSActivation= $OSActivation"
 Write-Host -ForegroundColor Green "OSLanguage= $OSLanguage"
 
+start-sleep -Seconds 30
 #Set OSDCloud Vars
 $Global:MyOSDCloud = [ordered]@{
     Restart = [bool]$False
