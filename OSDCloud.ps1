@@ -84,7 +84,6 @@ Write-Host -ForegroundColor Green "OSEdition= $OSEdition"
 Write-Host -ForegroundColor Green "OSActivation= $OSActivation"
 Write-Host -ForegroundColor Green "OSLanguage= $OSLanguage"
 
-start-sleep -Seconds 30
 #Set OSDCloud Vars
 $Global:MyOSDCloud = [ordered]@{
     Restart = [bool]$False
@@ -102,7 +101,6 @@ $Global:MyOSDCloud = [ordered]@{
 #Testing MS Update Catalog Driver Sync
 #$Global:MyOSDCloud.DriverPackName = 'Microsoft Update Catalog'
 
-start-sleep -Seconds 5
 Write-Host -ForegroundColor Green "DriverPack= $DriverPack"
 #Used to Determine Driver Pack
 $DriverPack = Get-OSDCloudDriverPack -Product $Product -OSVersion $OSVersion -OSReleaseID $OSReleaseID
@@ -140,7 +138,6 @@ if (Test-HPIASupport){
     Manage-HPBiosSettings -SetSettings
 }
 
-Write-Host -ForegroundColor Green "Check Microsoft"
 if ($Manufacturer -match "Microsoft") {
     #Set Lenovo BIOS Settings to what I want:
     Write-Host -ForegroundColor Green "Microsoft= True"
@@ -166,7 +163,6 @@ Write-Output $Global:MyOSDCloud
 #$ModulePath = (Get-ChildItem -Path "$($Env:ProgramFiles)\WindowsPowerShell\Modules\osd" | Where-Object {$_.Attributes -match "Directory"} | Select-Object-Object -Last 1).fullname
 #import-module "$ModulePath\OSD.psd1" -Force
 
-start-sleep -Seconds 5
 #Launch OSDCloud
 Write-SectionHeader -Message "Starting OSDCloud"
 write-host "Start-OSDCloud -OSName $OSName -OSEdition $OSEdition -OSActivation $OSActivation -OSLanguage $OSLanguage"
@@ -175,7 +171,7 @@ Start-OSDCloud -OSName $OSName -OSEdition $OSEdition -OSActivation $OSActivation
 
 Write-SectionHeader -Message "OSDCloud Process Complete, Running Custom Actions From Script Before Reboot"
 
-start-sleep -Seconds 120
+start-sleep -Seconds 60
 Write-Host -ForegroundColor Green "Copy CMTrace"
 <#Used in Testing "Beta Gary Modules which I've updated on the USB Stick"
 $OfflineModulePath = (Get-ChildItem -Path "C:\Program Files\WindowsPowerShell\Modules\osd" | Where-Object {$_.Attributes -match "Directory"} | Select-Object -Last 1).fullname
@@ -187,7 +183,6 @@ if (Test-path -path "x:\windows\system32\cmtrace.exe"){
     copy-item "x:\windows\system32\cmtrace.exe" -Destination "C:\Windows\System\cmtrace.exe" -verbose
 }
 
-start-sleep -Seconds 5
 Write-Host -ForegroundColor Green "Lenovo Powershell"
 if ($Manufacturer -match "Lenovo") {
     $PowerShellSavePath = 'C:\Program Files\WindowsPowerShell'
@@ -196,6 +191,6 @@ if ($Manufacturer -match "Lenovo") {
     Write-Host "Copy-PSModuleToFolder -Name Lenovo.Client.Scripting to $PowerShellSavePath\Modules"
     Copy-PSModuleToFolder -Name Lenovo.Client.Scripting -Destination "$PowerShellSavePath\Modules"
 }
-start-sleep -Seconds 120
+start-sleep -Seconds 60
 #Restart
 #restart-computer
