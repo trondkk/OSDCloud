@@ -71,7 +71,7 @@ $OSVersion = 'Windows 11' #Used to Determine Driver Pack
 $OSReleaseID = '25H2' #Used to Determine Driver Pack
 $OSName = 'Windows 11 25H2 ARM64'
 $OSEdition = 'Pro'
-$OSActivation = 'Volume'
+$OSActivation = 'Retail'
 $OSLanguage = 'nb-no'
 
 Write-Host -ForegroundColor Green "Product= $Product"
@@ -160,8 +160,8 @@ Write-SectionHeader "OSDCloud Variables"
 Write-Output $Global:MyOSDCloud
 
 #Update Files in Module that have been updated since last PowerShell Gallery Build (Testing Only)
-#$ModulePath = (Get-ChildItem -Path "$($Env:ProgramFiles)\WindowsPowerShell\Modules\osd" | Where-Object {$_.Attributes -match "Directory"} | Select-Object-Object -Last 1).fullname
-#import-module "$ModulePath\OSD.psd1" -Force
+$ModulePath = (Get-ChildItem -Path "$($Env:ProgramFiles)\WindowsPowerShell\Modules\osd" | Where-Object {$_.Attributes -match "Directory"} | Select-Object-Object -Last 1).fullname
+import-module "$ModulePath\OSD.psd1" -Force
 
 #Launch OSDCloud
 Write-SectionHeader -Message "Starting OSDCloud"
